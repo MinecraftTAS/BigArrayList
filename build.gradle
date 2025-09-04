@@ -1,22 +1,54 @@
 
 plugins {
     id 'java'
-    id 'idea'
+    id 'java-gradle-plugin'
+	id 'maven-publish'
 }
+
+def snapshot = project.release=="true" ? "" : "-SNAPSHOT"
+version = project.version+snapshot
+group="com.dselent"
+
+sourceCompatibility = targetCompatibility = 8
 
 repositories {
     mavenCentral()
 }
 
-test {
-    useJUnitPlatform()
-}
-
 dependencies {
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
 
-
-
+publishing {
+	repositories {
+		maven {
+			name = "minecrafttasSnapshots"
+			url = "https://maven.minecrafttas.com/snapshots"
+			credentials(PasswordCredentials)
+			authentication {
+				basic(BasicAuthentication)
+			}
+		}
+		maven {
+			name = "minecrafttasMain"
+			url = "https://maven.minecrafttas.com/main"
+			credentials(PasswordCredentials)
+			authentication {
+				basic(BasicAuthentication)
+			}
+		}
+	}
+}

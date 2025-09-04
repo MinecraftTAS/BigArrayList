@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class BigArrayListTest
 {
@@ -219,4 +220,28 @@ public class BigArrayListTest
 		}
 	}
 	
+	/**
+	 * Tests iterator implementation
+	 */
+	@Test
+	public void testIterator() {
+
+		bigArrayList = new BigArrayList<Integer>();
+		
+		for (int i = 0; i < 10000; i++) {
+			bigArrayList.add(random.nextInt());
+		}
+		
+		List<Integer> expected = new ArrayList<>();
+		for (int i = 0; i < bigArrayList.size(); i++) {
+			expected.add(bigArrayList.get(i));
+		}
+		
+		List<Integer> actual = new ArrayList<>();
+		for (int i : bigArrayList) {
+			actual.add(i);
+		}
+		
+		assertIterableEquals(expected, actual);
+	}
 }
