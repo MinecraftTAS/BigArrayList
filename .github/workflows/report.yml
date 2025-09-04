@@ -1,0 +1,21 @@
+name: report
+run-name: Upload Test Report
+on:
+  workflow_run:
+    workflows: [test]
+    types: [completed]
+    
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: dorny/test-reporter@v1.9.1
+      with:
+        artifact: TestResult
+        name: Tests
+        path: '*.xml'
+        reporter: java-junit

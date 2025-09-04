@@ -5,7 +5,8 @@ plugins {
 	id 'maven-publish'
 }
 
-version="1.5"
+def snapshot = project.release=="true" ? "" : "-SNAPSHOT"
+version = project.version+snapshot
 group="com.dselent"
 
 sourceCompatibility = targetCompatibility = 8
