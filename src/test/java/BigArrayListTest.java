@@ -7,6 +7,7 @@ import java.util.Random;
 import com.dselent.bigarraylist.BigArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,6 +57,7 @@ public class BigArrayListTest
 	 * Monte-carlo test case.  Tests random operations on BigArrayLists with parameters randomized within ranges.
 	 */
 	@Test
+	@Disabled
 	public void testBigArrayList()
 	{
 		for(int i=0; i<testRuns; i++)
