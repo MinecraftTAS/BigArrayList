@@ -32,6 +32,14 @@ java {
     withJavadocJar()
 }
 
+sourceSets {
+    main {
+        java {
+            exclude 'examples/**'
+        }
+    }
+}   
+
 publishing {
 	repositories {
 		maven {
