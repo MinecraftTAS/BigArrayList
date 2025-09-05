@@ -1,7 +1,6 @@
 
 plugins {
-    id 'java'
-    id 'java-gradle-plugin'
+	id 'java'
 	id 'maven-publish'
 }
 
@@ -32,6 +31,14 @@ java {
     withJavadocJar()
 }
 
+sourceSets {
+    main {
+        java {
+            exclude 'examples/**'
+        }
+    }
+}   
+
 publishing {
 	repositories {
 		maven {
@@ -51,4 +58,10 @@ publishing {
 			}
 		}
 	}
+	publications {
+    	maven(MavenPublication) {
+      		artifactId = "bigarraylist"
+      		from components.java
+      	}
+    }
 }
