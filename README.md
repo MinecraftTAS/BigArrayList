@@ -7,6 +7,20 @@ A BigArrayList is basically an ArrayList that can handle a much larger amount of
 3. Removing elements from the list
 4. Sorting the list
 
+## Installation
+BigArrayList is available under [maven.minecrafttas.com](https://maven.minecrafttas.com/#/main/com/dselent/bigarraylist).
+
+The basic build.gradle configuration should look like this:
+```groovy
+repositories {
+  maven { url = "https://maven.minecrafttas.com/main" }
+}
+
+dependencies {
+  implementation "com.dselent:bigarraylist:1.4"
+}
+```
+
 ## BigArrayList Size
 
 The number of elements a BigArrayList can hold is 2^63-1 elements.  This number is currently considered a theoretical limit, since it would take too much time and space to store that many elements. A more practical limit would be based on the combination of available RAM and disk space because the amount of space will likely be the limiting factor.
