@@ -1,7 +1,6 @@
 
 plugins {
-    id 'java'
-    id 'java-gradle-plugin'
+	id 'java'
 	id 'maven-publish'
 }
 
@@ -59,4 +58,10 @@ publishing {
 			}
 		}
 	}
+	publications {
+    	maven(MavenPublication) {
+      		artifactId = "bigarraylist"
+      		from components.java
+      	}
+    }
 }
