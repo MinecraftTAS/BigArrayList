@@ -1,7 +1,12 @@
 # Publish snapshot to https://maven.minecrafttas.com/snapshots
 name: Publish Snapshot
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '**'
 
 jobs:
   build:
@@ -21,3 +26,4 @@ jobs:
         gradle-version: 8.13
     - name: Publish
       run: gradle publishAllPublicationsToMinecrafttasSnapshotsRepository -PminecrafttasSnapshotsUsername=${{ secrets.MAVEN_NAME }} -PminecrafttasSnapshotsPassword=${{ secrets.MAVEN_SECRET }}
+
