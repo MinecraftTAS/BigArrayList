@@ -1002,8 +1002,7 @@ public class BigArrayList<E extends Serializable> implements Iterable<E> {
 	 * @return The new element at the specified index
 	 */
 	public E set(int index, E element) {
-		long longIndex = index;
-		return set(longIndex, element);
+		return set((long)index, element);
 	}
 
 	/**
@@ -1012,49 +1011,36 @@ public class BigArrayList<E extends Serializable> implements Iterable<E> {
 	 * @return True is the list is empty, false otherwise
 	 */
 	public boolean isEmpty() {
-		boolean empty = true;
-
-		if (size() > 0) {
-			empty = false;
-		}
-
-		return empty;
+		return wholeListSize == 0;
 	}
 
 	//hashCode cannot be implemented correctly due to contents being on disk and out of sight from memory
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(Object otherObject) {
 
-		boolean isEqual = true;
-
-		if (otherObject == null) {
-			isEqual = false;
-		} else if (this == otherObject) {
-			isEqual = true;
-		} else if (!(otherObject instanceof BigArrayList)) {
-			isEqual = false;
-		} else {
-			BigArrayList otherBigArrayList = (BigArrayList) otherObject;
-
-			if (wholeListSize != otherBigArrayList.size()) {
-				isEqual = false;
-			} else if (liveObject != otherBigArrayList.isLive()) {
-				isEqual = false;
-			} else {
-				for (long i = 0; i < wholeListSize && isEqual; i++) {
-					if (!get(i).equals(otherBigArrayList.get(i))) {
-						isEqual = false;
-					}
-				}
-			}
+		if (!(otherObject instanceof BigArrayList)) {
+			return super.equals(otherObject);
 		}
+		
+		BigArrayList<?> otherBigArrayList = (BigArrayList<?>) otherObject;
 
-		return isEqual;
+		if (wholeListSize != otherBigArrayList.size()) {
+			return false;
+		}
+		if (liveObject != otherBigArrayList.isLive()) {
+			return false;
+		}
+		
+        Iterator<E> thisIterator = this.iterator();
+        Iterator<?> otherIterator = otherBigArrayList.iterator();
+        while (thisIterator.hasNext() && otherIterator.hasNext()) {
+            E o1 = thisIterator.next();
+            Object o2 = otherIterator.next();
+            if (!(o1==null ? o2==null : o1.equals(o2)))
+                return false;
+		}
+        return !(thisIterator.hasNext() || otherIterator.hasNext());
 	}
 
 	@Override
