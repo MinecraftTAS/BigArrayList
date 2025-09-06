@@ -22,6 +22,7 @@ package com.dselent.bigarraylist;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -1077,5 +1078,34 @@ public class BigArrayList<E extends Serializable> implements Iterable<E> {
 				return get(currentIndex++);
 			}
 		};
+	}
+	
+	/**
+	 * @param other The other BigArrayList
+	 * @see ArrayList#addAll(Collection)
+	 */
+	public void addAll(BigArrayList<? extends E> other) {
+		for (E element : other) {
+			add(element);
+		}
+	}
+	
+	/**
+	 * @param other The other collection
+	 * @see ArrayList#addAll(Collection)
+	 */
+	public void addAll(Collection<? extends E> other) {
+		for (E element : other) {
+			add(element);
+		}
+	}
+	
+	/**
+	 * Clears all elements without clearing the memory
+	 */
+	public void clear() {
+		for (long i = wholeListSize-1; i >= 0; i--) {
+			remove(i);
+		}
 	}
 }

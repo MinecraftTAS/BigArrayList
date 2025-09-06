@@ -368,9 +368,6 @@ class FileAccessor<E extends Serializable>
 				}
 			}
 		}
-
 		//don't delete the folder, other things may be using it
-
 	}
-
 }
