@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BigArrayListTest
 {
@@ -27,7 +28,7 @@ public class BigArrayListTest
 	private static int maxActions;
 	
 	private static Random random;
-	private BigArrayList<Integer> bigArrayList;
+	private BigArrayList<Integer> actualMonte;
 
 	@BeforeAll
 	static void setUp() throws Exception
@@ -47,9 +48,9 @@ public class BigArrayListTest
 	@AfterEach
 	protected void tearDown() throws Exception
 	{
-		if(bigArrayList != null)
+		if(actualMonte != null)
 		{
-			bigArrayList.clearMemory();
+			actualMonte.clearMemory();
 		}
 	}
 	
@@ -68,7 +69,7 @@ public class BigArrayListTest
 			int cacheBlocks = random.nextInt(maxCacheBlocks- minCacheBlocks) + minCacheBlocks;
 			int actions = random.nextInt(maxActions-minActions) + minActions;
 
-			bigArrayList = new BigArrayList<Integer>(blockSize, cacheBlocks);
+			actualMonte = new BigArrayList<Integer>(blockSize, cacheBlocks);
 			List<Integer> arrayList = new ArrayList<>();
 
 			for(int j=0; j<actions; j++)
@@ -81,18 +82,18 @@ public class BigArrayListTest
 					
 					int num1 = random.nextInt();
 					arrayList.add(num1);
-					bigArrayList.add(num1);
+					actualMonte.add(num1);
 					
 					//add another if it is early
 					if(j < actions/2)
 					{
 						int num2 = random.nextInt();
 						arrayList.add(num2);
-						bigArrayList.add(num2);
+						actualMonte.add(num2);
 					}
 					
 					String errorMessage = "(ADD) Sizes not equal: test run iteration = " + i + ", action number = " + j;
-					assertEquals((long)arrayList.size(), bigArrayList.size(), errorMessage);
+					assertEquals((long)arrayList.size(), actualMonte.size(), errorMessage);
 				}
 				else if(action == 1)
 				{
@@ -103,14 +104,14 @@ public class BigArrayListTest
 					int getIndex = random.nextInt(listSize);
 
 					long number1 = arrayList.get(getIndex);
-					long number2 = bigArrayList.get(getIndex);
+					long number2 = actualMonte.get(getIndex);
 					
 					String errorMessage = "(GET) Elements not equal: test run iteration = " + i + ", action number = " + j +
 							", ArrayList element = " + number1 + ", BigArrayList element = " + number2 + ", index = " + getIndex;
 					assertEquals(number1, number2, errorMessage);
 					
 					String errorMessage2 = "(GET) Sizes not equal: test run iteration = " + i + ", action number = " + j;
-					assertEquals(arrayList.size(), bigArrayList.size(), errorMessage2);
+					assertEquals(arrayList.size(), actualMonte.size(), errorMessage2);
 				}
 				else if(action == 2)
 				{
@@ -122,11 +123,11 @@ public class BigArrayListTest
 					int randomNumber = random.nextInt();
 
 					arrayList.set(setIndex, randomNumber);
-					bigArrayList.set(setIndex, randomNumber);
+					actualMonte.set(setIndex, randomNumber);
 					
 					
 					String errorMessage2 = "(SET) Sizes not equal: test run iteration = " + i + ", action number = " + j + ", index = " + setIndex;
-					assertEquals(arrayList.size(), bigArrayList.size(), errorMessage2);
+					assertEquals(arrayList.size(), actualMonte.size(), errorMessage2);
 				}
 				else if(action == 3)
 				{
@@ -137,14 +138,14 @@ public class BigArrayListTest
 					int removeIndex = random.nextInt(listSize);
 
 					int number1 = arrayList.remove(removeIndex);
-					int number2 = bigArrayList.remove(removeIndex);
+					int number2 = actualMonte.remove(removeIndex);
 
 					String errorMessage = "(REMOVE) Elements not equal: test run iteration = " + i + ", action number = " + j +
 							", ArrayList element = " + number1 + ", BigArrayList element = " + number2 + ", index = " + removeIndex;
 					assertEquals(number1, number2, errorMessage);
 					
 					String errorMessage2 = "(REMOVE) Sizes not equal: test run iteration = " + i + ", action number = " + j;
-					assertEquals(arrayList.size(), bigArrayList.size(), errorMessage2);
+					assertEquals(arrayList.size(), actualMonte.size(), errorMessage2);
 					
 					if(j > actions/2 && arrayList.size() > 0)
 					{
@@ -152,14 +153,14 @@ public class BigArrayListTest
 						int removeIndex2 = random.nextInt(listSize2);
 						
 						int number1_2 = arrayList.remove(removeIndex2);
-						int number2_2 = bigArrayList.remove(removeIndex2);
+						int number2_2 = actualMonte.remove(removeIndex2);
 
 						String errorMessage3 = "(REMOVE) Elements not equal: test run iteration = " + i + ", action number = " + j +
 								", ArrayList element = " + number1_2 + ", BigArrayList element = " + number2_2 + ", index = " + removeIndex;
 						assertEquals(number1, number2, errorMessage3);
 						
 						String errorMessage4 = "(REMOVE) Sizes not equal: test run iteration = " + i + ", action number = " + j;
-						assertEquals(arrayList.size(), bigArrayList.size(), errorMessage4);
+						assertEquals(arrayList.size(), actualMonte.size(), errorMessage4);
 					}
 				}
 					
@@ -181,7 +182,7 @@ public class BigArrayListTest
 			for(int j=0; j<arrayList.size(); j++)
 			{
 				int number1 = arrayList.get(j);
-				int number2 = bigArrayList.get(j);
+				int number2 = actualMonte.get(j);
 
 				String errorMessage = "(Elements not equal: test run iteration = " + i +
 						", ArrayList element = " + number1 + ", BigArrayList element = " + number2 + ", index = " + j;
@@ -193,7 +194,7 @@ public class BigArrayListTest
 			
 			try
 			{
-				bigArrayList = BigArrayList.sort(bigArrayList);
+				actualMonte = BigArrayList.sort(actualMonte);
 			}
 			catch (IOException e)
 			{
@@ -203,7 +204,7 @@ public class BigArrayListTest
 			
 			try
 			{
-				bigArrayList.clearMemory();
+				actualMonte.clearMemory();
 			}
 			catch(IOException e)
 			{
@@ -213,7 +214,7 @@ public class BigArrayListTest
 			for(int j=0; j<arrayList.size(); j++)
 			{
 				int number1 = arrayList.get(j);
-				int number2 = bigArrayList.get(j);
+				int number2 = actualMonte.get(j);
 
 				String errorMessage = "(Elements not equal after sorting: test run iteration = " + i +
 						", ArrayList element = " + number1 + ", BigArrayList element = " + number2 + ", index = " + j;
@@ -228,22 +229,94 @@ public class BigArrayListTest
 	@Test
 	public void testIterator() {
 
-		bigArrayList = new BigArrayList<Integer>();
+		BigArrayList<Integer> bal = new BigArrayList<>();
 		
 		for (int i = 0; i < 10000; i++) {
-			bigArrayList.add(random.nextInt());
+			bal.add(random.nextInt());
 		}
 		
 		List<Integer> expected = new ArrayList<>();
-		for (int i = 0; i < bigArrayList.size(); i++) {
-			expected.add(bigArrayList.get(i));
+		for (int i = 0; i < bal.size(); i++) {
+			expected.add(bal.get(i));
 		}
 		
 		List<Integer> actual = new ArrayList<>();
-		for (int i : bigArrayList) {
+		for (int i : bal) {
 			actual.add(i);
 		}
 		
 		assertIterableEquals(expected, actual);
+		try {
+			bal.clearMemory();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testAddAll() {
+		BigArrayList<Integer> actual = new BigArrayList<>();
+		List<Integer> expected = new ArrayList<>();
+		
+		for (int i = 0; i < 1000; i++) {
+			int randomInt = random.nextInt();
+			actual.add(randomInt);
+			expected.add(randomInt);
+		}
+		
+		List<Integer> toAdd = new ArrayList<>();
+		
+		for (int i = 0; i < 1000; i++) {
+			int randomInt = random.nextInt();
+			toAdd.add(randomInt);
+		}
+		
+		actual.addAll(toAdd);
+		expected.addAll(toAdd);
+		
+		assertIterableEquals(expected, actual);
+		try {
+			actual.clearMemory();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testClear() {
+		BigArrayList<Integer> actual = new BigArrayList<>();
+		List<Integer> expected = new ArrayList<>();
+		
+		for (int i = 0; i < 1000; i++) {
+			int randomInt = random.nextInt();
+			actual.add(randomInt);
+			expected.add(randomInt);
+		}
+		
+		actual.clear();
+		expected.clear();
+		
+		assertTrue(actual.isLive());
+		assertTrue(actual.isEmpty());
+	}
+	
+	@Test
+	public void testEquals() {
+		BigArrayList<Integer> actual = new BigArrayList<>();
+		BigArrayList<Integer> expected = new BigArrayList<>();
+		for (int i = 0; i < 1000; i++) {
+			int randomInt = random.nextInt();
+			actual.add(randomInt);
+			expected.add(randomInt);
+		}
+
+		assertEquals(expected, actual);
+		
+		try {
+			actual.clearMemory();
+			expected.clearMemory();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
